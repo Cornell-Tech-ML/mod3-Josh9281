@@ -61,7 +61,7 @@ def test_one_args(
     data: DataObject,
 ) -> None:
     """Run forward for all one arg functions above."""
-    t1 = data.draw(tensors(backend=shared[backend])) 
+    t1 = data.draw(tensors(backend=shared[backend]))
     name, base_fn, tensor_fn = fn
     t2 = tensor_fn(t1)
     for ind in t2._tensor.indices():
@@ -239,7 +239,7 @@ if numba.cuda.is_available():
         size = 33
         x1 = [[random.random() for i in range(size)] for j in range(size)]
         y1 = [[random.random() for i in range(size)] for j in range(size)]
-        z = minitorch.tensor(x1, backend=shared["fast"]) @ minitorch.tensor(
+        z = minitorch.tensor(x1, backend=shared["fast"]) @ minitorch.tensor(  # pyright: ignore
             y1, backend=shared["fast"]
         )  # pyright: ignore
 
