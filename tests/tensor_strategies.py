@@ -29,7 +29,7 @@ def vals(draw: DrawFn, size: int, number: SearchStrategy[float]) -> Tensor:
             max_size=size,
         )
     )
-    return minitorch.tensor(pts)
+    return minitorch.tensor(pts)  # pyright: ignore
 
 
 @composite

@@ -46,7 +46,7 @@ if numba.cuda.is_available():
 @pytest.mark.parametrize("backend", backend_tests)
 def test_create(backend: str, t1: List[float]) -> None:
     """Create different tensors."""
-    t2 = minitorch.tensor(t1, backend=shared[backend])
+    t2 = minitorch.tensor(t1, backend=shared[backend])  # pyright: ignore
     for i in range(len(t1)):
         assert t1[i] == t2[i]
 
@@ -134,54 +134,54 @@ if numba.cuda.is_available():
     @pytest.mark.task3_3
     def test_sum_practice() -> None:
         x = [random.random() for i in range(16)]
-        b = minitorch.tensor(x)
+        b = minitorch.tensor(x)  # pyright: ignore
         s = b.sum()[0]
-        b2 = minitorch.tensor(x, backend=shared["cuda"])
+        b2 = minitorch.tensor(x, backend=shared["cuda"])  # pyright: ignore
         out = minitorch.sum_practice(b2)
         assert_close(s, out._storage[0])
 
     @pytest.mark.task3_3
     def test_sum_practice2() -> None:
         x = [random.random() for i in range(64)]
-        b = minitorch.tensor(x)
+        b = minitorch.tensor(x)  # pyright: ignore
         s = b.sum()[0]
-        b2 = minitorch.tensor(x, backend=shared["cuda"])
+        b2 = minitorch.tensor(x, backend=shared["cuda"])  # pyright: ignore
         out = minitorch.sum_practice(b2)
         assert_close(s, out._storage[0] + out._storage[1])
 
     @pytest.mark.task3_3
     def test_sum_practice3() -> None:
         x = [random.random() for i in range(48)]
-        b = minitorch.tensor(x)
+        b = minitorch.tensor(x)  # pyright: ignore
         s = b.sum()[0]
-        b2 = minitorch.tensor(x, backend=shared["cuda"])
+        b2 = minitorch.tensor(x, backend=shared["cuda"])  # pyright: ignore
         out = minitorch.sum_practice(b2)
         assert_close(s, out._storage[0] + out._storage[1])
 
     @pytest.mark.task3_3
     def test_sum_practice4() -> None:
         x = [random.random() for i in range(32)]
-        b = minitorch.tensor(x)
+        b = minitorch.tensor(x)  # pyright: ignore
         s = b.sum()[0]
-        b2 = minitorch.tensor(x, backend=shared["cuda"])
+        b2 = minitorch.tensor(x, backend=shared["cuda"])  # pyright: ignore
         out = b2.sum(0)
         assert_close(s, out[0])
 
     @pytest.mark.task3_3
     def test_sum_practice5() -> None:
         x = [random.random() for i in range(500)]
-        b = minitorch.tensor(x)
+        b = minitorch.tensor(x)  # pyright: ignore
         s = b.sum()[0]
-        b2 = minitorch.tensor(x, backend=shared["cuda"])
+        b2 = minitorch.tensor(x, backend=shared["cuda"])  # pyright: ignore
         out = b2.sum(0)
         assert_close(s, out[0])
 
     @pytest.mark.task3_3
     def test_sum_practice_other_dims() -> None:
         x = [[random.random() for i in range(32)] for j in range(16)]
-        b = minitorch.tensor(x)
+        b = minitorch.tensor(x)  # pyright: ignore
         s = b.sum(1)
-        b2 = minitorch.tensor(x, backend=shared["cuda"])
+        b2 = minitorch.tensor(x, backend=shared["cuda"])  # pyright: ignore
         out = b2.sum(1)
         for i in range(16):
             assert_close(s[i, 0], out[i, 0])
@@ -190,12 +190,12 @@ if numba.cuda.is_available():
     def test_mul_practice1() -> None:
         x1 = [[random.random() for i in range(2)] for j in range(2)]
         y1 = [[random.random() for i in range(2)] for j in range(2)]
-        z = minitorch.tensor(x1, backend=shared["fast"]) @ minitorch.tensor(
+        z = minitorch.tensor(x1, backend=shared["fast"]) @ minitorch.tensor(  # pyright: ignore
             y1, backend=shared["fast"]
-        )
+        )  # pyright: ignore
 
-        x = minitorch.tensor(x1, backend=shared["cuda"])
-        y = minitorch.tensor(y1, backend=shared["cuda"])
+        x = minitorch.tensor(x1, backend=shared["cuda"])  # pyright: ignore
+        y = minitorch.tensor(y1, backend=shared["cuda"])  # pyright: ignore
         z2 = minitorch.mm_practice(x, y)
         for i in range(2):
             for j in range(2):
@@ -205,12 +205,12 @@ if numba.cuda.is_available():
     def test_mul_practice2() -> None:
         x1 = [[random.random() for i in range(32)] for j in range(32)]
         y1 = [[random.random() for i in range(32)] for j in range(32)]
-        z = minitorch.tensor(x1, backend=shared["fast"]) @ minitorch.tensor(
+        z = minitorch.tensor(x1, backend=shared["fast"]) @ minitorch.tensor(  # pyright: ignore
             y1, backend=shared["fast"]
-        )
+        )  # pyright: ignore
 
-        x = minitorch.tensor(x1, backend=shared["cuda"])
-        y = minitorch.tensor(y1, backend=shared["cuda"])
+        x = minitorch.tensor(x1, backend=shared["cuda"])  # pyright: ignore
+        y = minitorch.tensor(y1, backend=shared["cuda"])  # pyright: ignore
         z2 = minitorch.mm_practice(x, y)
         for i in range(32):
             for j in range(32):
@@ -221,12 +221,12 @@ if numba.cuda.is_available():
         """Small real example"""
         x1 = [[random.random() for i in range(2)] for j in range(2)]
         y1 = [[random.random() for i in range(2)] for j in range(2)]
-        z = minitorch.tensor(x1, backend=shared["fast"]) @ minitorch.tensor(
+        z = minitorch.tensor(x1, backend=shared["fast"]) @ minitorch.tensor(  # pyright: ignore
             y1, backend=shared["fast"]
-        )
+        )  # pyright: ignore
 
-        x = minitorch.tensor(x1, backend=shared["cuda"])
-        y = minitorch.tensor(y1, backend=shared["cuda"])
+        x = minitorch.tensor(x1, backend=shared["cuda"])  # pyright: ignore
+        y = minitorch.tensor(y1, backend=shared["cuda"])  # pyright: ignore
         z2 = x @ y
 
         for i in range(2):
@@ -239,12 +239,12 @@ if numba.cuda.is_available():
         size = 33
         x1 = [[random.random() for i in range(size)] for j in range(size)]
         y1 = [[random.random() for i in range(size)] for j in range(size)]
-        z = minitorch.tensor(x1, backend=shared["fast"]) @ minitorch.tensor(
+        z = minitorch.tensor(x1, backend=shared["fast"]) @ minitorch.tensor(  # pyright: ignore
             y1, backend=shared["fast"]
-        )
+        )  # pyright: ignore
 
-        x = minitorch.tensor(x1, backend=shared["cuda"])
-        y = minitorch.tensor(y1, backend=shared["cuda"])
+        x = minitorch.tensor(x1, backend=shared["cuda"])  # pyright: ignore
+        y = minitorch.tensor(y1, backend=shared["cuda"])  # pyright: ignore
         z2 = x @ y
 
         for i in range(size):
@@ -263,12 +263,12 @@ if numba.cuda.is_available():
             [[random.random() for i in range(size)] for j in range(size)]
             for _ in range(2)
         ]
-        z = minitorch.tensor(x1, backend=shared["fast"]) @ minitorch.tensor(
+        z = minitorch.tensor(x1, backend=shared["fast"]) @ minitorch.tensor(  # pyright: ignore
             y1, backend=shared["fast"]
-        )
+        )  # pyright: ignore
 
-        x = minitorch.tensor(x1, backend=shared["cuda"])
-        y = minitorch.tensor(y1, backend=shared["cuda"])
+        x = minitorch.tensor(x1, backend=shared["cuda"])  # pyright: ignore
+        y = minitorch.tensor(y1, backend=shared["cuda"])  # pyright: ignore
         z2 = x @ y
 
         for b in range(2):
@@ -290,12 +290,12 @@ if numba.cuda.is_available():
             [[random.random() for i in range(size_b)] for j in range(size_in)]
             for _ in range(2)
         ]
-        z = minitorch.tensor(x1, backend=shared["fast"]) @ minitorch.tensor(
+        z = minitorch.tensor(x1, backend=shared["fast"]) @ minitorch.tensor(  # pyright: ignore
             y1, backend=shared["fast"]
-        )
+        )  # pyright: ignore
 
-        x = minitorch.tensor(x1, backend=shared["cuda"])
-        y = minitorch.tensor(y1, backend=shared["cuda"])
+        x = minitorch.tensor(x1, backend=shared["cuda"])  # pyright: ignore
+        y = minitorch.tensor(y1, backend=shared["cuda"])  # pyright: ignore
         z2 = x @ y
 
         for b in range(2):
