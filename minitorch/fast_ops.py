@@ -319,7 +319,7 @@ def tensor_reduce(
                 a_pos = (
                     base_a_pos + j * a_strides[reduce_dim]
                 )  # Incrementally calculate position
-                reduced_value = fn(a_storage[a_pos], out[o_index])
+                reduced_value = fn(float(a_storage[a_pos]), float(out[o_index]))
                 out[o_index] = reduced_value
             out_index[reduce_dim] = (
                 original_value  # Restore the original value of reduce_dim
