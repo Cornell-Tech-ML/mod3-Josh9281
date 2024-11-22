@@ -276,31 +276,6 @@ def tensor_reduce(
         reduce_dim: int,
     ) -> None:
         # TODO: Implement for Task 3.1.
-        # for i in prange(len(out)):
-        #     out_index = np.zeros(MAX_DIMS, np.int32)
-        #     to_index(i, out_shape, out_index)
-        #     o_index = index_to_position(out_index, out_strides)
-        #     for j in range(a_shape[reduce_dim]):
-        #         a_index = out_index.copy() #needs to remove .copy()
-        #         a_index[reduce_dim] = j
-        #         a_pos = index_to_position(a_index, a_strides) #needs to remove index_to_position()
-        #         reduced_value = fn(a_storage[a_pos], out[o_index])
-        #         out[o_index] = reduced_value
-
-        # for i in prange(len(out)):
-        #     out_index = np.zeros(MAX_DIMS, np.int32)
-        #     to_index(i, out_shape, out_index)
-        #     o_index = index_to_position(out_index, out_strides)
-        #     base_a_pos = 0
-        #     for dim, stride in enumerate(a_strides):
-        #         base_a_pos += out_index[dim] * stride
-        #     for j in range(a_shape[reduce_dim]):
-        #         a_index = out_index.copy()  # This may still be optimized further
-        #         a_index[reduce_dim] = j
-        #         a_pos = base_a_pos + j * a_strides[reduce_dim]  # Incrementally calculate the position
-        #         reduced_value = fn(a_storage[a_pos], out[o_index])
-        #         out[o_index] = reduced_value
-
         for i in prange(len(out)):
             out_index = np.zeros(MAX_DIMS, np.int32)
             to_index(i, out_shape, out_index)
