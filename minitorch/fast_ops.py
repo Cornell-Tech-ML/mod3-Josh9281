@@ -181,16 +181,21 @@ def tensor_map(
         in_strides: Strides,
     ) -> None:
         # TODO: Implement for Task 3.1.
-        out_index = np.zeros(MAX_DIMS, dtype=np.int32)  # Ensure int32 for indices
-        in_index = np.zeros(MAX_DIMS, dtype=np.int32)
-        for i in prange(len(out)):
-            to_index(i, out_shape, out_index)
-            broadcast_index(out_index, out_shape, in_shape, in_index)
-            out_pos = index_to_position(out_index, out_strides)
-            in_pos = int(
-                index_to_position(in_index, in_strides)
-            )  # Explicitly cast to int
-            out[out_pos] = fn(in_storage[in_pos])
+        if list(out_shape) == list(in_shape) and list(out_strides) == list(in_strides):
+            for i in prange(len(out)):
+                out[i] = fn(in_storage[i])
+            return
+        else:
+            for i in prange(len(out)):
+                out_index = np.zeros(MAX_DIMS, dtype=np.int32)  # Ensure int32 for indices
+                in_index = np.zeros(MAX_DIMS, dtype=np.int32)
+                to_index(i, out_shape, out_index)
+                broadcast_index(out_index, out_shape, in_shape, in_index)
+                out_pos = index_to_position(out_index, out_strides)
+                in_pos = int(
+                    index_to_position(in_index, in_strides)
+                )  # Explicitly cast to int
+                out[out_pos] = fn(in_storage[in_pos])
 
     return njit(_map, parallel=True)  # type: ignore
 
@@ -230,17 +235,24 @@ def tensor_zip(
         b_strides: Strides,
     ) -> None:
         # TODO: Implement for Task 3.1.
-        out_index = np.zeros(MAX_DIMS, np.int32)
-        a_index = np.zeros(MAX_DIMS, np.int32)
-        b_index = np.zeros(MAX_DIMS, np.int32)
-        for i in prange(len(out)):
-            to_index(i, out_shape, out_index)
-            broadcast_index(out_index, out_shape, a_shape, a_index)
-            broadcast_index(out_index, out_shape, b_shape, b_index)
-            out_pos = index_to_position(out_index, out_strides)
-            a_pos = index_to_position(a_index, a_strides)
-            b_pos = index_to_position(b_index, b_strides)
-            out[out_pos] = fn(a_storage[a_pos], b_storage[b_pos])
+        if list(out_shape) == list(a_shape) == list(b_shape) and list(
+            out_strides
+        ) == list(a_strides) == list(b_strides):
+            for i in prange(len(out)):
+                out[i] = fn(a_storage[i], b_storage[i])
+            return
+        else:
+            for i in prange(len(out)):
+                out_index = np.zeros(MAX_DIMS, np.int32)
+                a_index = np.zeros(MAX_DIMS, np.int32)
+                b_index = np.zeros(MAX_DIMS, np.int32)
+                to_index(i, out_shape, out_index)
+                broadcast_index(out_index, out_shape, a_shape, a_index)
+                broadcast_index(out_index, out_shape, b_shape, b_index)
+                out_pos = index_to_position(out_index, out_strides)
+                a_pos = index_to_position(a_index, a_strides)
+                b_pos = index_to_position(b_index, b_strides)
+                out[out_pos] = fn(a_storage[a_pos], b_storage[b_pos])
 
     return njit(_zip, parallel=True)  # type: ignore
 

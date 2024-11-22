@@ -96,20 +96,27 @@ def broadcast_index(
 
     """
     # TODO: Implement for Task 2.2.
-    # Ensure the smaller tensor shape can broadcast to the bigger tensor shape
-    assert len(big_shape) >= len(
-        shape
-    ), "The smaller shape cannot have more dimensions than the bigger shape."
-    # Difference in the number of dimensions between the big and small shape
-    dim_offset = len(big_shape) - len(shape)
-    # Iterate over the smaller tensor's dimensions and map to the corresponding big tensor dimensions
-    for i in range(len(shape)):
-        if shape[i] == 1:
-            # If the dimension in the smaller shape is 1, broadcast it by setting index to 0
-            out_index[i] = 0
+    # # Ensure the smaller tensor shape can broadcast to the bigger tensor shape
+    # assert len(big_shape) >= len(
+    #     shape
+    # ), "The smaller shape cannot have more dimensions than the bigger shape."
+    # # Difference in the number of dimensions between the big and small shape
+    # dim_offset = len(big_shape) - len(shape)
+    # # Iterate over the smaller tensor's dimensions and map to the corresponding big tensor dimensions
+    # for i in range(len(shape)):
+    #     if shape[i] == 1:
+    #         # If the dimension in the smaller shape is 1, broadcast it by setting index to 0
+    #         out_index[i] = 0
+    #     else:
+    #         # Otherwise, just copy the index from the corresponding dimension in the big_index
+    #         out_index[i] = big_index[i + dim_offset]
+
+    for i, s in enumerate(shape):
+        if s > 1:
+            out_index[i] = big_index[i + (len(big_shape) - len(shape))]
         else:
-            # Otherwise, just copy the index from the corresponding dimension in the big_index
-            out_index[i] = big_index[i + dim_offset]
+            out_index[i] = 0
+    return None
 
 
 def shape_broadcast(shape1: UserShape, shape2: UserShape) -> UserShape:
