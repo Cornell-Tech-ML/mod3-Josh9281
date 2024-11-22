@@ -5,6 +5,17 @@ from typing import List, Tuple
 
 
 def make_pts(N: int) -> List[Tuple[float, float]]:
+    """Generate N random points in the 2D space.
+
+    Args:
+    ----
+        N: Number of points to generate.
+
+    Returns:
+    -------
+        A list of tuples, where each tuple contains two random float values (x_1, x_2).
+
+    """
     X = []
     for i in range(N):
         x_1 = random.random()
@@ -15,12 +26,33 @@ def make_pts(N: int) -> List[Tuple[float, float]]:
 
 @dataclass
 class Graph:
+    """A simple class to represent a graph with points and labels.
+
+    Attributes
+    ----------
+        N: Number of points in the graph.
+        X: List of points (tuples of floats) in the graph.
+        y: List of labels corresponding to the points.
+
+    """
+
     N: int
     X: List[Tuple[float, float]]
     y: List[int]
 
 
 def simple(N: int) -> Graph:
+    """Generate a simple dataset where points are classified based on x_1.
+
+    Args:
+    ----
+        N: Number of points to generate.
+
+    Returns:
+    -------
+        A Graph object containing points and labels.
+
+    """
     X = make_pts(N)
     y = []
     for x_1, x_2 in X:
@@ -30,6 +62,17 @@ def simple(N: int) -> Graph:
 
 
 def diag(N: int) -> Graph:
+    """Generate a dataset where points are classified based on the sum of x_1 and x_2.
+
+    Args:
+    ----
+        N: Number of points to generate.
+
+    Returns:
+    -------
+        A Graph object containing points and labels.
+
+    """
     X = make_pts(N)
     y = []
     for x_1, x_2 in X:
@@ -39,6 +82,17 @@ def diag(N: int) -> Graph:
 
 
 def split(N: int) -> Graph:
+    """Generate a dataset where points are classified based on the value of x_1.
+
+    Args:
+    ----
+        N: Number of points to generate.
+
+    Returns:
+    -------
+        A Graph object containing points and labels.
+
+    """
     X = make_pts(N)
     y = []
     for x_1, x_2 in X:
@@ -48,6 +102,17 @@ def split(N: int) -> Graph:
 
 
 def xor(N: int) -> Graph:
+    """Generate an XOR-like dataset where points are classified based on XOR of x_1 and x_2.
+
+    Args:
+    ----
+        N: Number of points to generate.
+
+    Returns:
+    -------
+        A Graph object containing points and labels.
+
+    """
     X = make_pts(N)
     y = []
     for x_1, x_2 in X:
@@ -57,6 +122,17 @@ def xor(N: int) -> Graph:
 
 
 def circle(N: int) -> Graph:
+    """Generate a circular dataset where points are classified based on distance from the center.
+
+    Args:
+    ----
+        N: Number of points to generate.
+
+    Returns:
+    -------
+        A Graph object containing points and labels.
+
+    """
     X = make_pts(N)
     y = []
     for x_1, x_2 in X:
@@ -67,10 +143,24 @@ def circle(N: int) -> Graph:
 
 
 def spiral(N: int) -> Graph:
+    """Generate a spiral dataset where points are classified based on their position on the spiral.
+
+    Args:
+    ----
+        N: Number of points to generate.
+
+    Returns:
+    -------
+        A Graph object containing points and labels.
+
+    """
+
     def x(t: float) -> float:
+        """Calculate the x-coordinate of the spiral."""
         return t * math.cos(t) / 20.0
 
     def y(t: float) -> float:
+        """Calculate the y-coordinate of the spiral."""
         return t * math.sin(t) / 20.0
 
     X = [
