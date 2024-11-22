@@ -187,7 +187,9 @@ def tensor_map(
             return
         else:
             for i in prange(len(out)):
-                out_index = np.zeros(MAX_DIMS, dtype=np.int32)  # Ensure int32 for indices
+                out_index = np.zeros(
+                    MAX_DIMS, dtype=np.int32
+                )  # Ensure int32 for indices
                 in_index = np.zeros(MAX_DIMS, dtype=np.int32)
                 to_index(i, out_shape, out_index)
                 broadcast_index(out_index, out_shape, in_shape, in_index)
