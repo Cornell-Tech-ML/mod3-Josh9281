@@ -290,29 +290,19 @@ def tensor_reduce(
         reduce_dim: int,
     ) -> None:
         # TODO: Implement for Task 3.1.
+        reduce_size = a_shape[reduce_dim]
+        reduce_stride = a_strides[reduce_dim]
+
         for i in prange(len(out)):
-            out_index = np.zeros(MAX_DIMS, np.int32)
+            out_index = np.empty(MAX_DIMS, dtype=np.int32)
             to_index(i, out_shape, out_index)
-            o_index = index_to_position(out_index, out_strides)
-
-            base_a_pos = 0
-            for dim, stride in enumerate(a_strides):
-                base_a_pos += out_index[dim] * stride
-
-            original_value = out_index[
-                reduce_dim
-            ]  # Store the original value of the reduce_dim
-            for j in range(a_shape[reduce_dim]):
-                # Temporarily modify the reduce_dim directly in `out_index`
-                out_index[reduce_dim] = j
-                a_pos = (
-                    base_a_pos + j * a_strides[reduce_dim]
-                )  # Incrementally calculate position
-                reduced_value = fn(float(a_storage[a_pos]), float(out[o_index]))
-                out[o_index] = reduced_value
-            out_index[reduce_dim] = (
-                original_value  # Restore the original value of reduce_dim
-            )
+            out_pos = index_to_position(out_index, out_strides)
+            a_pos = index_to_position(out_index, a_strides)
+            reduce_val = out[out_pos]
+            for j in range(reduce_size):
+                reduce_val = fn(reduce_val, a_storage[a_pos])
+                a_pos += reduce_stride
+            out[out_pos] = reduce_val
 
     return njit(_reduce, parallel=True)  # type: ignore
 

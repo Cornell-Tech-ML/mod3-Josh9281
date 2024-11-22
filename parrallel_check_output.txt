@@ -191,88 +191,60 @@ REDUCE
 
 
 Parallel loop listing for  Function tensor_reduce.<locals>._reduce, /Users/josh9281/Downloads/mod3-Josh9281/minitorch/fast_ops.py (283)
-------------------------------------------------------------------------------------|loop #ID
-    def _reduce(                                                                    |
-        out: Storage,                                                               |
-        out_shape: Shape,                                                           |
-        out_strides: Strides,                                                       |
-        a_storage: Storage,                                                         |
-        a_shape: Shape,                                                             |
-        a_strides: Strides,                                                         |
-        reduce_dim: int,                                                            |
-    ) -> None:                                                                      |
-        # TODO: Implement for Task 3.1.                                             |
-        for i in prange(len(out)):--------------------------------------------------| #10
-            out_index = np.zeros(MAX_DIMS, np.int32)--------------------------------| #9
-            to_index(i, out_shape, out_index)                                       |
-            o_index = index_to_position(out_index, out_strides)                     |
-                                                                                    |
-            base_a_pos = 0                                                          |
-            for dim, stride in enumerate(a_strides):                                |
-                base_a_pos += out_index[dim] * stride                               |
-                                                                                    |
-            original_value = out_index[                                             |
-                reduce_dim                                                          |
-            ]  # Store the original value of the reduce_dim                         |
-            for j in range(a_shape[reduce_dim]):                                    |
-                # Temporarily modify the reduce_dim directly in `out_index`         |
-                out_index[reduce_dim] = j                                           |
-                a_pos = (                                                           |
-                    base_a_pos + j * a_strides[reduce_dim]                          |
-                )  # Incrementally calculate position                               |
-                reduced_value = fn(float(a_storage[a_pos]), float(out[o_index]))    |
-                out[o_index] = reduced_value                                        |
-            out_index[reduce_dim] = (                                               |
-                original_value  # Restore the original value of reduce_dim          |
-            )                                                                       |
+-------------------------------------------------------------------|loop #ID
+    def _reduce(                                                   |
+        out: Storage,                                              |
+        out_shape: Shape,                                          |
+        out_strides: Strides,                                      |
+        a_storage: Storage,                                        |
+        a_shape: Shape,                                            |
+        a_strides: Strides,                                        |
+        reduce_dim: int,                                           |
+    ) -> None:                                                     |
+        # TODO: Implement for Task 3.1.                            |
+        reduce_size = a_shape[reduce_dim]                          |
+        reduce_stride = a_strides[reduce_dim]                      |
+                                                                   |
+        for i in prange(len(out)):---------------------------------| #9
+            out_index = np.empty(MAX_DIMS, dtype=np.int32)         |
+            to_index(i, out_shape, out_index)                      |
+            out_pos = index_to_position(out_index, out_strides)    |
+            a_pos = index_to_position(out_index, a_strides)        |
+            reduce_val = out[out_pos]                              |
+            for j in range(reduce_size):                           |
+                reduce_val = fn(reduce_val, a_storage[a_pos])      |
+                a_pos += reduce_stride                             |
+            out[out_pos] = reduce_val                              |
 --------------------------------- Fusing loops ---------------------------------
 Attempting fusion of parallel loops (combines loops with similar properties)...
-Following the attempted fusion of parallel for-loops there are 2 parallel for-
-loop(s) (originating from loops labelled: #10, #9).
---------------------------------------------------------------------------------
----------------------------- Optimising loop nests -----------------------------
-Attempting loop nest rewrites (optimising for the largest parallel loops)...
-
-+--10 is a parallel loop
-   +--9 --> rewritten as a serial loop
+Following the attempted fusion of parallel for-loops there are 1 parallel for-
+loop(s) (originating from loops labelled: #9).
 --------------------------------------------------------------------------------
 ----------------------------- Before Optimisation ------------------------------
-Parallel region 0:
-+--10 (parallel)
-   +--9 (parallel)
-
-
 --------------------------------------------------------------------------------
 ------------------------------ After Optimisation ------------------------------
-Parallel region 0:
-+--10 (parallel)
-   +--9 (serial)
-
-
-
-Parallel region 0 (loop #10) had 0 loop(s) fused and 1 loop(s) serialized as
-part of the larger parallel loop (#10).
+Parallel structure is already optimal.
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 
 ---------------------------Loop invariant code motion---------------------------
 Allocation hoisting:
 The memory allocation derived from the instruction at
-/Users/josh9281/Downloads/mod3-Josh9281/minitorch/fast_ops.py (294) is hoisted
-out of the parallel loop labelled #10 (it will be performed before the loop is
+/Users/josh9281/Downloads/mod3-Josh9281/minitorch/fast_ops.py (297) is hoisted
+out of the parallel loop labelled #9 (it will be performed before the loop is
 executed and reused inside the loop):
-   Allocation:: out_index = np.zeros(MAX_DIMS, np.int32)
+   Allocation:: out_index = np.empty(MAX_DIMS, dtype=np.int32)
     - numpy.empty() is used for the allocation.
 None
 MATRIX MULTIPLY
 
 ================================================================================
  Parallel Accelerator Optimizing:  Function _tensor_matrix_multiply,
-/Users/josh9281/Downloads/mod3-Josh9281/minitorch/fast_ops.py (320)
+/Users/josh9281/Downloads/mod3-Josh9281/minitorch/fast_ops.py (310)
 ================================================================================
 
 
-Parallel loop listing for  Function _tensor_matrix_multiply, /Users/josh9281/Downloads/mod3-Josh9281/minitorch/fast_ops.py (320)
+Parallel loop listing for  Function _tensor_matrix_multiply, /Users/josh9281/Downloads/mod3-Josh9281/minitorch/fast_ops.py (310)
 --------------------------------------------------------------------------------------------|loop #ID
 def _tensor_matrix_multiply(                                                                |
     out: Storage,                                                                           |
@@ -328,7 +300,7 @@ def _tensor_matrix_multiply(                                                    
     k = a_shape[-1]  # shared dimension size                                                |
                                                                                             |
     # Parallelize over batches and rows of the output matrix                                |
-    for batch in prange(batch_size):--------------------------------------------------------| #11
+    for batch in prange(batch_size):--------------------------------------------------------| #10
         for i in range(m):                                                                  |
             for j in range(n):                                                              |
                 # Initialize the output position in `out` storage                           |
@@ -348,7 +320,7 @@ def _tensor_matrix_multiply(                                                    
 --------------------------------- Fusing loops ---------------------------------
 Attempting fusion of parallel loops (combines loops with similar properties)...
 Following the attempted fusion of parallel for-loops there are 1 parallel for-
-loop(s) (originating from loops labelled: #11).
+loop(s) (originating from loops labelled: #10).
 --------------------------------------------------------------------------------
 ----------------------------- Before Optimisation ------------------------------
 --------------------------------------------------------------------------------
