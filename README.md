@@ -19,28 +19,28 @@ The files that will be synced are:
         minitorch/operators.py minitorch/module.py minitorch/autodiff.py minitorch/scalar.py minitorch/scalar_functions.py minitorch/module.py project/run_manual.py project/run_scalar.py project/datasets.py
 
 ---
-# NUMBA Parallel Check
+## NUMBA Parallel Check
 Please refer to the full logs [here](parrallel_check_output.txt).
 
 # Performance Analysis: Fast Ops vs. GPU
 ![Performance Comparison](graph/PerformanceAnalysis.png)
 
-# Tensor Model Performance
+## Tensor Model Performance
 
 This document presents the results and training performance for a Tensor model on three datasets. Additionally, the time per epoch for each model size is recorded for analysis.
 
-## Results Summary
+### Results Summary
 
-### Model with HIDDEN = 100
+#### Model with HIDDEN = 100
 
-#### Dataset: Split
+##### Dataset: Split
 - **Backend**: GPU
 - **Rate**: 0.05
 - **Final Accuracy**: 50
 - **Final Loss**: 0.1694
 - **Average Time Per Epoch**: 2.53 seconds
 
-#### Detailed Metrics:
+##### Detailed Metrics:
 | **Epoch** | **Loss**    | **Accuracy (Correct)** | **Time (s)** |
 |-----------|-------------|------------------------|--------------|
 | 0         | 6.3235      | 36                     | 5.86         |
@@ -55,14 +55,14 @@ This document presents the results and training performance for a Tensor model o
 | 400       | 0.0764      | 47                     | 2.28         |
 | 490       | 0.1694      | 48                     | 2.29         |
 
-#### Dataset: Split
+##### Dataset: Split
 - **Backend**: CPU
 - **Rate**: 0.05
 - **Final Accuracy**: 50
 - **Final Loss**: 0.0815
 - **Average Time Per Epoch**: 0.52 seconds
 
-#### Detailed Metrics:
+##### Detailed Metrics:
 | **Epoch** | **Loss**    | **Accuracy (Correct)** | **Time (s)** |
 |-----------|-------------|------------------------|--------------|
 | 0         | 6.9960      | 24                     | 10.53        |
@@ -77,14 +77,14 @@ This document presents the results and training performance for a Tensor model o
 | 400       | 0.7552      | 49                     | 0.40         |
 | 490       | 0.0815      | 48                     | 0.39         |
 
-#### Dataset: Xor
+##### Dataset: Xor
 - **Backend**: GPU
 - **Rate**: 0.05
 - **Final Accuracy**: 50
 - **Final Loss**: 0.3053
 - **Average Time Per Epoch**: 2.49 seconds
 
-#### Detailed Metrics:
+##### Detailed Metrics:
 | **Epoch** | **Loss**    | **Accuracy (Correct)** | **Time (s)** |
 |-----------|-------------|------------------------|--------------|
 | 0         | 6.3894      | 29                     | 4.13         |
@@ -98,14 +98,14 @@ This document presents the results and training performance for a Tensor model o
 | 400       | 0.7374      | 50                     | 2.22         |
 | 490       | 0.3053      | 50                     | 2.24         |
 
-#### Dataset: Xor
+##### Dataset: Xor
 - **Backend**: CPU
 - **Rate**: 0.05
 - **Final Accuracy**: 50
 - **Final Loss**: 0.3051
 - **Average Time Per Epoch**: 0.46 seconds
 
-#### Detailed Metrics:
+##### Detailed Metrics:
 | **Epoch** | **Loss**    | **Accuracy (Correct)** | **Time (s)** |
 |-----------|-------------|------------------------|--------------|
 | 0         | 9.3620      | 25                     | 9.07         |
@@ -120,14 +120,14 @@ This document presents the results and training performance for a Tensor model o
 | 450       | 0.0448      | 50                     | 0.38         |
 | 490       | 0.3051      | 49                     | 0.40         |
 
-#### Dataset: Simple
+##### Dataset: Simple
 - **Backend**: GPU
 - **Rate**: 0.05
 - **Final Accuracy**: 50
 - **Final Loss**: 0.0791
 - **Average Time Per Epoch**: 2.51 seconds
 
-#### Detailed Metrics:
+##### Detailed Metrics:
 | **Epoch** | **Loss**    | **Accuracy (Correct)** | **Time (s)** |
 |-----------|-------------|------------------------|--------------|
 | 0         | 5.4720      | 32                     | 4.28         |
@@ -141,14 +141,14 @@ This document presents the results and training performance for a Tensor model o
 | 400       | 0.1502      | 50                     | 2.25         |
 | 490       | 0.0791      | 50                     | 3.00         |
 
-#### Dataset: Simple
+##### Dataset: Simple
 - **Backend**: CPU
 - **Rate**: 0.05
 - **Final Accuracy**: 50
 - **Final Loss**: 0.0892
 - **Average Time Per Epoch**: 0.47 seconds
 
-#### Detailed Metrics:
+##### Detailed Metrics:
 | **Epoch** | **Loss**    | **Accuracy (Correct)** | **Time (s)** |
 |-----------|-------------|------------------------|--------------|
 | 0         | 5.8995      | 40                     | 8.41         |
@@ -162,16 +162,16 @@ This document presents the results and training performance for a Tensor model o
 | 400       | 0.9219      | 49                     | 0.40         |
 | 490       | 0.0892      | 49                     | 0.43         |
 
-### Model with HIDDEN = 200
+#### Model with HIDDEN = 200
 
-#### Dataset: Split
+##### Dataset: Split
 - **Backend**: GPU
 - **Rate**: 0.05
 - **Final Accuracy**: 50
 - **Final Loss**: 1.9171
 - **Average Time Per Epoch**: 3.33 seconds
 
-#### Detailed Metrics:
+##### Detailed Metrics:
 | **Epoch** | **Loss**    | **Accuracy (Correct)** | **Time (s)** |
 |-----------|-------------|------------------------|--------------|
 | 0         | 8.2642      | 32                     | 7.49         |
@@ -185,14 +185,14 @@ This document presents the results and training performance for a Tensor model o
 | 400       | 1.7441      | 45                     | 3.66         |
 | 490       | 1.9171      | 49                     | 2.98         |
 
-#### Dataset: Split
+##### Dataset: Split
 - **Backend**: CPU
 - **Rate**: 0.05
 - **Final Accuracy**: 50
 - **Final Loss**: 0.2292
 - **Average Time Per Epoch**: 1.54 seconds
 
-#### Detailed Metrics:
+##### Detailed Metrics:
 | **Epoch** | **Loss**    | **Accuracy (Correct)** | **Time (s)** |
 |-----------|-------------|------------------------|--------------|
 | 0         | 10.9304     | 32                     | 10.08        |
